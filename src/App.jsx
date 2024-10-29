@@ -1,17 +1,26 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
-import { db }  from "./data/db"
+import { db } from "./data/db";
 import Header from "./components/Header";
 import Guitar from "./components/Guitar";
 
 function App() {
-  //state
- /*  const [data, setData] = useState([db])
-  data.map((index, dato) => {
-    console.log(dato(index).id)
-  }) */
- 
   const [data, setData] = useState(db);
+  const [cart, setCart] = useState([]);
+
+  function addToCart(item) {
+    const itemExist = cart.findIndex((guitar) => guitar.id === item.id);
+    if (itemExist >= 0) {
+      console.log("Ya existe");
+      const updatedCart = [...cart];
+      updatedCart[itemExist].quantity++;
+      setCart(updatedCart);
+    } else {
+      item.quantity = 1;
+      //Al carrito anterior agregar la información anterior mas el nuevo Item
+      setCart([...cart, item]);
+    }
+  }
 
   return (
     <>
@@ -22,8 +31,11 @@ function App() {
 
         <div className="row mt-5">
           {data.map((guitar) => (
-            <Guitar key={guitar.id}
+            <Guitar
+              key={guitar.id}
               guitar={guitar}
+              setCart={setCart}
+              addToCart={addToCart}
             />
           ))}
         </div>
