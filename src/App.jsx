@@ -8,6 +8,23 @@ function App() {
   const [data, setData] = useState(db);
   const [cart, setCart] = useState([]);
 
+  function increaseQuantity(id) {
+    const index = cart.findIndex((guitar) => guitar.id === id);
+    const updatedCart = [...cart];
+    updatedCart[index].quantity++;
+    setCart(updatedCart);
+  }
+
+  function decreaseQuantity(id) {
+    const index = cart.findIndex((guitar) => guitar.id === id);
+
+    const updatedCart = [...cart];
+
+    if (updatedCart[index].quantity > 1) {
+      updatedCart[index].quantity--;
+    }
+    setCart(updatedCart);
+  }
   function addToCart(item) {
     const itemExist = cart.findIndex((guitar) => guitar.id === item.id);
     if (itemExist >= 0) {
@@ -15,6 +32,7 @@ function App() {
       const updatedCart = [...cart];
       updatedCart[itemExist].quantity++;
       setCart(updatedCart);
+      console.log(cart);
     } else {
       item.quantity = 1;
       //Al carrito anterior agregar la información anterior mas el nuevo Item
@@ -22,9 +40,21 @@ function App() {
     }
   }
 
+  const handleDelete = (id) => {
+    setCart(cart.filter((guitar) => guitar.id != id));
+  };
+  const handleEmpty = () => {
+    setCart([]);
+  };
   return (
     <>
-      <Header />
+      <Header
+        cart={cart}
+        handleDelete={handleDelete}
+        handleEmpty={handleEmpty}
+        increaseQuantity={increaseQuantity}
+        decreaseQuantity={decreaseQuantity}
+      />
 
       <main className="container-xl mt-5">
         <h2 className="text-center">Nuestra Colección</h2>
