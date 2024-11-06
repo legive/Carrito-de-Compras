@@ -7,24 +7,34 @@ import Guitar from "./components/Guitar";
 function App() {
   const [data, setData] = useState(db);
   const [cart, setCart] = useState([]);
-
+  const MAX_ITEMS = 5;
   function increaseQuantity(id) {
-    const index = cart.findIndex((guitar) => guitar.id === id);
-    const updatedCart = [...cart];
-    updatedCart[index].quantity++;
+    console.log("incrementar");
+    const updatedCart = cart.map((item) => {
+      if (item.id === id && item.quantity < MAX_ITEMS) {
+        return {
+          ...item,
+          quantity: item.quantity + 1,
+        };
+      }
+      return item;
+    });
     setCart(updatedCart);
   }
 
   function decreaseQuantity(id) {
-    const index = cart.findIndex((guitar) => guitar.id === id);
-
-    const updatedCart = [...cart];
-
-    if (updatedCart[index].quantity > 1) {
-      updatedCart[index].quantity--;
-    }
+    const updatedCart = cart.map((item) => {
+      if (item.id === id && item.quantity > 1) {
+        return {
+          ...item,
+          quantity: item.quantity - 1,
+        };
+      }
+      return item;
+    });
     setCart(updatedCart);
   }
+
   function addToCart(item) {
     const itemExist = cart.findIndex((guitar) => guitar.id === item.id);
     if (itemExist >= 0) {
