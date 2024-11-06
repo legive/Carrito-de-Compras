@@ -1,13 +1,24 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { db } from "./data/db";
 import Header from "./components/Header";
 import Guitar from "./components/Guitar";
 
 function App() {
+  const initialCart = () => {
+    const localStorageCart = localStorage.getItem("cart");
+    return localStorageCart ? JSON.parse(localStorageCart) : [];
+  };
   const [data, setData] = useState(db);
-  const [cart, setCart] = useState([]);
+
+  const [cart, setCart] = useState(initialCart);
+
   const MAX_ITEMS = 5;
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
   function increaseQuantity(id) {
     console.log("incrementar");
     const updatedCart = cart.map((item) => {
@@ -56,6 +67,7 @@ function App() {
   const handleEmpty = () => {
     setCart([]);
   };
+
   return (
     <>
       <Header
