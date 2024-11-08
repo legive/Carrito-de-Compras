@@ -1,7 +1,5 @@
 /* eslint-disable react/prop-types */
 
-import { useMemo } from "react";
-
 //Aqui podemos importar
 
 export default function Header({
@@ -10,21 +8,13 @@ export default function Header({
   handleEmpty,
   increaseQuantity,
   decreaseQuantity,
+  isEmpty,
+  cartTotal,
 }) {
   //El export se puede poner al final
 
   //declaracion de variables o funciones
 
-  //State derivado
-  //El use memo nos sirve para realizar un codigo cuando se cumpla un cambio
-  const isEmpty = useMemo(() => (cart.length === 0 ? true : false), [cart]);
-
-  //Para calcular el total
-  const cartTotal = () =>
-    cart.reduce(
-      (total, itemCart) => total + itemCart.quantity * itemCart.price,
-      0
-    );
   return (
     <>
       <header className="py-5 header">
